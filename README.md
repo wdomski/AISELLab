@@ -113,6 +113,38 @@ Considered algorithms (but not limited to) are :
 - KNN (K Nearest Neighbours),
 - Decision tree, Random forest.
 
+Use scikit and its implementation of various classificators:
+```
+# for SVM
+from sklearn import svm
+svm.SVC()
+
+# for Decision trees
+from sklearn import tree
+tree.DecisionTreeClassifier()
+
+# for Gaussian Naive Bayes
+from sklearn.naive_bayes import GaussianNB
+GaussianNB()
+
+# for k-nearest neighbors
+from sklearn.neighbors import KNeighborsClassifier
+KNeighborsClassifier()
+
+# Stochastic Gradient Descent
+from sklearn.linear_model import SGDClassifier
+SGDClassifier()
+
+# Random forest
+from sklearn.ensemble import RandomForestClassifier
+RandomForestClassifier()
+
+# Ensemble of KNN 
+from sklearn.ensemble import BaggingClassifier
+from sklearn.neighbors import KNeighborsClassifier
+BaggingClassifier()
+```
+
 ## Lab -- classification with DL
 
 Classification of data based on Deep learning algorithms 
