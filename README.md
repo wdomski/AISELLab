@@ -162,6 +162,104 @@ At the end of te classes comparison between these two
 methods should be presented.
 A confusion matrix should be presented.
 
+Import all necessary data
+
+```
+import numpy as np
+import tensorflow as tf
+from tensorflow import keras
+from tensorflow.keras import layers
+```
+
+Retrieve data for MNIST dataset
+```
+keras.datasets.mnist.load_data()
+```
+
+The retrieved data (labels) provide numerical values of classes from 0 to 9.
+In order to use them for training encode them to one hot representation.
+There are 10 classes in total, thus if labels are e.g.
+```
+[2, 0, 3]
+```
+they have to be encoded into 
+```
+[[0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
+ [1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 1, 0, 0, 0, 0, 0, 0],]
+```
+
+for this purpose following function can be used
+```Python
+keras.utils.to_categorical()
+```
+
+Create sequential model providing it with 
+list of layers:
+
+```
+keras.Sequential([])
+```
+
+Some of available layers:
+```
+layers.Conv2D()
+layers.MaxPooling2D()
+layers.Activation()
+layers.Dropout()
+layers.LayerNormalization()
+layers.Dense()
+layers.Flatten()
+```
+
+For created model, summary() function can be used to 
+display architecture of the network.
+
+Compile project (apply loss function, optimizer and metrics)
+with
+```
+compile()
+```
+
+Now, the model can be trained. Training dataset has to be 
+provided, as well batch size, number of epochs and 
+validation split. Training can be performed with following 
+function
+```
+fit()
+```
+
+To evaluate how well the model was trained use
+```
+evaluate()
+```
+It will provide loss and accuracy on provided data set. 
+The dataset has to be different from training dataset.
+
+To run inference 
+```
+predict()
+```
+can be used. Mind that the prediction is 
+one hot encoded.
+
+Display confusion matrix. In order to calculate confusion 
+matrix following function can be used
+```
+tf.math.confusion_matrix(labels, predictions)
+```
+where labels are training labels (the ground truth) 
+while the predictions are inferences calculated with 
+*predict()*. The columns represent predictions 
+while rows represent true labels (classes). 
+However, in order for confusion_matrix() function 
+to work properly labels and predictions need to 
+be transformed into numerical values. One way to achieve this 
+is to use numpy function
+```
+np.argmax()
+```
+
 ## Lab -- dataset augmentation
 
 Sometimes it happens that the number of provided data samples 
@@ -175,7 +273,7 @@ classifier.
 
 At the end of this class student should present 
 how well the trained model performs and if asked to 
-comparison between model trained on full data set should be 
+the comparison between model trained on full data set should be 
 presented.
 
 ## Lab -- RNN
