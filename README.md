@@ -278,7 +278,7 @@ presented.
 
 ## Lab -- RNN
 
-Recurrent neural networks are used to predict 
+One of recurrent neural networks usage is to predict 
 next, most probable, element in time series.
 
 You will be given a dataset or asked to download one.
@@ -292,6 +292,73 @@ The goal is to create RNN based on LSTM
 You will be asked to present statistics how well 
 trained network performed and also 
 compare two different implementations between themselves.
+
+Useful functions to generate data:
+
+```Python
+# generates a timeseries consisting of sinusoid function
+#
+# freq_list:   list of frequencies
+# offset_list: list of offsets
+# amp_list:    list of sinusoid amplitudes
+# length:      maximum time to generate samples
+# n:           total number of samples
+# series:      number of series
+# noise:       generates uniform noise on [-noise, noise] range
+#
+# returns      time of shape (n) and data of shape (series, n, 1)
+def generate_series(freq_list:list, offset_list:list, amp_list:list, length=100, n=1000, series=1, noise=0.2):
+    t = np.linspace(0, length, n)
+    data = np.zeros((n))
+    for i in range(len(freq_list)):
+        freq = freq_list[i]
+        offset = offset_list[i]
+        amp = amp_list[i]
+        data += amp * np.sin(2 * np.pi * (t - offset) * freq)
+    data = data + noise * (np.random.rand(series, n)-0.5)
+    return t, data[..., np.newaxis].astype(np.float32)
+
+# divides data into samples
+#
+# data:         input data of shape (1, n, 1)
+# windows_size: length of time window in samples for features
+# y_size:       length of predicted values
+#
+# returns       x of shape (samples, window_size, 1)
+#               y of shape (samples, y_size, 1)
+def moving_window(data, window_size=25, y_size=1):
+    n = data.shape[1] // (window_size + y_size)
+    size = int(n * (window_size + y_size))
+    reshaped = data[0, :size, 0].reshape(n, window_size + y_size, 1)
+    x = reshaped[:, 0:window_size]
+    y = reshaped[:, window_size:window_size+y_size]
+    return x, y	
+```
+
+Generating data
+```Python
+_, series = generate_series([1, 2, 10], [0, 0.3, 3], [1, 1, 0.2], length=40000, n=1000000, series=1)
+x, y = moving_window(series, window_size=input_size, y_size=predicted_steps)
+```
+
+Layers which can be used for model building:
+```Python
+# RNN layers
+keras.layers.LSTM(25, return_sequences=True, input_shape=[None, 1])
+keras.layers.SimpleRNN(25, return_sequences=True, input_shape=[None, 1])
+keras.layers.GRU(25, return_sequences=True, input_shape=[None, 1])
+
+# regularization with dropout
+keras.layers.Dropout(0.5)
+
+# output layers
+keras.layers.TimeDistributed(keras.layers.Dense(predicted_steps))
+keras.layers.Dense(predicted_steps)
+```
+
+Depending on if return_sequences is set or not the output of the layer is 
+affected. For return_sequences=False only output from last step in RNN layer 
+is returned. For return_sequences=True all steps are returned.
 
 ## Lab -- mini project
 
