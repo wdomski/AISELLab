@@ -1,5 +1,90 @@
 # Laboratory outline
 
+## Environment preparation
+
+There are two options on how exercises can be realized. 
+First option (preffered) is to use remote server with jupyter notebook.
+The second option is to install and prepare virtual environment for python.
+
+### Remote server
+
+Go to [jupyterhub.kcir.pwr.edu.pl](https://jupyterhub.kcir.pwr.edu.pl/) 
+and use your LDAP credentails.
+
+### Local virtual environment
+
+Install python 3.10 and create a virtual envrionment.
+
+```
+python -m venv venv
+```
+or (if you have *py* installed, it should be installed along with Python.
+```
+py -3.10 -m venv venv
+```
+
+Source the environment (use the option appropriate for your console)
+only a single command has to be invoked
+```
+source venv/Scripts/activate  # for Windows, git Bash
+.\venv\Scripts\Activate.ps1   # for Windows, PowerShell
+.\venv\Scripts\Activate.ps1   # for Windows, Command line
+source venv/bin/activate      # for Linux
+```
+
+At this point you should notice that the virtual environment 
+was activated. Before prompt you should see
+```
+(venv) > 
+```
+where *venv* is the name of your Python virtual environment.
+
+Upgrade pip (Python package manager
+```
+pip install --upgrade pip
+```
+
+Install all necessary packages like:
+- tensorflow,
+- numpy,
+- scipy,
+- matplotlib,
+- pandas.
+
+The *requirements.txt* file contains all the packages along with 
+theirs correct versions. Provided installation will use CPU 
+configuration.
+
+```
+pip install -r requirements.txt
+```
+
+After that you can test your tensorflow installation with
+```
+python -c "import tensorflow as tf; print(tf.reduce_sum(tf.random.normal([1000, 1000])))"
+```
+you should expect similar output to this
+```
+tf.Tensor(-1833.9727, shape=(), dtype=float32)
+```
+
+You can now work with Python, now. 
+You can either directly work in the console, use IDE like VS Code 
+and source the virtual environment or launch jupyter notebook 
+with 
+```
+jupyter notebook
+```
+
+Remember that before starting working with python you have 
+to activate the virtual environment with one of the commands suitable 
+for your setup. If you would like to deactivate the virtual environment 
+you can simply use 
+```
+deactivate
+```
+command.
+
 ## Lab -- scripting
 
 Introduction to Python script language.
